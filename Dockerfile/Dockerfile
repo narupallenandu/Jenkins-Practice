@@ -8,9 +8,22 @@ pipeline {
 
     stages {
 
+        stage('Greeting') {
+            steps {
+                echo 'Hello Nandu from Jenkins!'
+            }
+        }
+
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/narupallenandu/jenkins-hello-world.git'
+                git 'https://github.com/narupallenandu/Jenkins-Practice.git'
+            }
+        }
+
+        stage('Verify Docker') {
+            steps {
+                sh 'docker --version'
+                sh 'docker ps'
             }
         }
 
@@ -35,6 +48,12 @@ pipeline {
         stage('Push Image to Docker Hub') {
             steps {
                 sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
+            }
+        }
+
+        stage('Success') {
+            steps {
+                echo 'Docker image pushed successfully to Docker Hub!'
             }
         }
     }
