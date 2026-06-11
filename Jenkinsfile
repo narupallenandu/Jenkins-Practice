@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "narupallenandu/hello-nandu"
+        IMAGE_NAME = "narupallenandu/credentials"
         IMAGE_TAG  = "latest"
     }
 
@@ -86,8 +86,7 @@ CMD ["echo", "Hello Nandu from Docker"]
                     )
                 ]) {
                     sh '''
-                    echo "$DOCKER_PASS" | docker login \
-                    -u "$DOCKER_USER" --password-stdin
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     '''
                 }
             }
