@@ -40,27 +40,9 @@ CMD ["echo", "Hello Nandu from Docker"]
             }
         }
 
-        stage('Display Dockerfile') {
-            steps {
-                sh 'cat Dockerfile'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
-            }
-        }
-
-        stage('List Docker Images') {
-            steps {
-                sh 'docker images'
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                sh 'docker run --rm ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
 
@@ -86,7 +68,8 @@ CMD ["echo", "Hello Nandu from Docker"]
                     )
                 ]) {
                     sh '''
-                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    echo "$DOCKER_PASS" | docker login \
+                    -u "$DOCKER_USER" --password-stdin
                     '''
                 }
             }
@@ -98,30 +81,10 @@ CMD ["echo", "Hello Nandu from Docker"]
             }
         }
 
-        stage('Cleanup') {
-            steps {
-                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true'
-            }
-        }
-
         stage('Success') {
             steps {
                 echo 'Docker Image Built, Scanned and Pushed Successfully!'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully.'
-        }
-
-        failure {
-            echo 'Pipeline failed.'
-        }
-
-        always {
-            echo 'Pipeline execution finished.'
         }
     }
 }
